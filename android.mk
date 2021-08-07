@@ -54,17 +54,17 @@ override LDFLAGS += uSockets.a
 # By default we build the uSockets.a static library
 default:
 	rm -f *.o
-	$(CC) $(CFLAGS) -flto -O3 -c src/*.c src/eventing/*.c src/crypto/*.c
+	$(CC) $(CFLAGS) -O3 -c src/*.c src/eventing/*.c src/crypto/*.c
 # For now we do rely on C++17 for OpenSSL support but we will be porting this work to C11
 ifeq ($(WITH_OPENSSL),1)
-	$(CXX) $(CXXFLAGS) -std=c++17 -flto -O3 -c src/crypto/*.cpp
+	$(CXX) $(CXXFLAGS) -std=c++17 -O3 -c src/crypto/*.cpp
 endif
 	$(AR) rvs uSockets.a *.o
 
 # Builds all examples
 .PHONY: examples
 examples: default
-	for f in examples/*.c; do $(CC) -flto -O3 $(CFLAGS) -o $$(basename "$$f" ".c") "$$f" $(LDFLAGS); done
+	for f in examples/*.c; do $(CC) -O3 $(CFLAGS) -o $$(basename "$$f" ".c") "$$f" $(LDFLAGS); done
 
 swift_examples:
 	swiftc -O -I . examples/swift_http_server/main.swift uSockets.a -o swift_http_server
