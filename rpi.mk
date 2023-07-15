@@ -46,8 +46,13 @@ ifeq ($(WITH_ASAN),1)
 	override LDFLAGS += -fsanitize=address
 endif
 
-override CFLAGS += -std=c11 -Isrc
-override LDFLAGS += uSockets.a
+override CFLAGS += -std=c11 -Isrc \
+--sysroot="$(HOME)/arm-rpi-linux-gnueabihf/arm-rpi-linux-gnueabihf/sysroot" \
+-B"$(HOME)/arm-rpi-linux-gnueabihf/bin/arm-rpi-linux-gnueabihf-"
+
+override LDFLAGS += uSockets.a \
+--sysroot="$(HOME)/arm-rpi-linux-gnueabihf/arm-rpi-linux-gnueabihf/sysroot" \
+-B"$(HOME)/arm-rpi-linux-gnueabihf/bin/arm-rpi-linux-gnueabihf-"
 
 # By default we build the uSockets.a static library
 default:
