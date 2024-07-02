@@ -1,5 +1,6 @@
 DEVKITPRO = /opt/devkitpro
-
+CC = gcc
+CXX = g++
 ARCH = -march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -fPIE
 
 override CFLAGS += -Wall -O2 -ffunction-sections -D__SWITCH__ $(ARCH)
