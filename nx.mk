@@ -3,7 +3,7 @@ include $(DEVKITPRO)/libnx/switch_rules
 
 ARCH = -march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -fPIE
 
-override CFLAGS += -Wall -O2 -ffunction-sections -D__SWITCH__ $(ARCH)
+override CFLAGS += -Wall -O2 -ffunction-sections -D__SWITCH__ $(INCLUDE) $(ARCH)
 
 override LDFLAGS += -specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH)
 
