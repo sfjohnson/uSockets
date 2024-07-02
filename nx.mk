@@ -1,9 +1,11 @@
 DEVKITPRO = /opt/devkitpro
 include $(DEVKITPRO)/libnx/switch_rules
 
+LIBDIRS = $(PORTLIBS) $(LIBNX)
+
 ARCH = -march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -fPIE
 
-override CFLAGS += -Wall -O2 -ffunction-sections -D__SWITCH__ $(INCLUDE) $(ARCH)
+override CFLAGS += -Wall -O2 -ffunction-sections -D__SWITCH__ $(INCLUDE) $(ARCH) $(DEFINES)
 
 override LDFLAGS += -specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH)
 
@@ -22,6 +24,9 @@ $(ARCH) \
 -std=c++2a \
 -Isrc \
 -IuSockets/src
+
+export INCLUDE :=  $(foreach dir,$(LIBDIRS),-I$(dir)/include)
+export LIBPATHS := $(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 
 # WITH_OPENSSL=1 enables OpenSSL 1.1+ support or BoringSSL
 # For now we need to link with C++ for OpenSSL support, but should be removed with time
