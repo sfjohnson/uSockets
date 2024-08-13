@@ -33,16 +33,21 @@ ifeq ($(WITH_ASAN),1)
 	override LDFLAGS += -fsanitize=address
 endif
 
+LLVM_PATH := $(shell brew --prefix llvm@15)
+override CC = $(LLVM_PATH)/bin/clang
+override CXX = $(LLVM_PATH)/bin/clang
+override AR = $(LLVM_PATH)/bin/llvm-ar
+
 override CFLAGS += -std=c11 -Isrc
 override LDFLAGS += uSockets.a
 
 # By default we build the uSockets.a static library
 default:
 	rm -f *.o
-	$(CC) $(CFLAGS) -flto -O3 -c src/*.c src/eventing/*.c src/crypto/*.c
+	$(CC) $(CFLAGS) -fPIC -flto -O3 -c src/*.c src/eventing/*.c src/crypto/*.c
 # For now we do rely on C++17 for OpenSSL support but we will be porting this work to C11
 ifeq ($(WITH_OPENSSL),1)
-	$(CXX) $(CXXFLAGS) -std=c++17 -flto -O3 -c src/crypto/*.cpp
+	$(CXX) $(CXXFLAGS) -fPIC -std=c++17 -flto -O3 -c src/crypto/*.cpp
 endif
 	$(AR) rvs uSockets.a *.o
 
